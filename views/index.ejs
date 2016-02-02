@@ -109,11 +109,7 @@
       // console.log('connected');
       messageEl.className = 'message';
       messageEl.classList.add('message--connected');
-      messageEl.innerHTML = 'Calling!.. <br /> <small>(Will hangup in 30 secs)</small>';
-
-      timer = setTimeout(function(){
-        hangup();
-      }, 30000);
+      messageEl.innerHTML = 'Connected!';
     });
 
     Twilio.Device.disconnect(function (conn) {
@@ -121,9 +117,6 @@
       messageEl.className = 'message';
       messageEl.classList.add('message--disconnected');
       messageEl.innerHTML = 'Call ended';
-
-      clearTimeout(timer);
-      hangup();
     });
 
     Twilio.Device.incoming(function (conn) {
