@@ -1,6 +1,6 @@
 # twilio browser to phone (softphone)
 
-_based on [twilio-client-quicker-starter](https://github.com/choppen5/twilio-client-quicker-starter) ported to node cause i couldnt find any simple examples_
+_this is completely this example [twilio-client-quicker-starter](https://github.com/choppen5/twilio-client-quicker-starter) but instead of ruby it's node, cause i couldnt find any simple starter examples_
 
 ## twilio
 
