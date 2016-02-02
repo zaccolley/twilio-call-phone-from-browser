@@ -149,7 +149,7 @@
 
     function call () {
       var numberEl = document.querySelector('.number-input');
-      Twilio.Device.connect({ "PhoneNumber": numberEl.value });
+      Twilio.Device.connect({ number: numberEl.value });
       callButtonEl.innerHTML = '<span class="call-button__icon"></span>Hangup';
       callButtonEl.className = 'call-button';
       callButtonEl.classList.add('call-button--hangup');
