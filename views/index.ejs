@@ -34,19 +34,6 @@
       cursor: pointer;
     }
 
-    .call-button__icon {
-      float: left;
-      margin-right: .25em;
-      width: 1em;
-      height: 1em;
-      background: white;
-      border-radius: 50%;
-    }
-
-    .call-button--error .call-button__icon{ background: red; }
-    .call-button--connected .call-button__icon{ background: green; }
-    .call-button--disconnected .call-button__icon{ background: blue; }
-
     .message{ color: grey; }
     .message--error{ color: red; }
     .message--connected{ color: green; }
@@ -64,10 +51,7 @@
   </style>
 </head>
 <body>
-  <button class="call-button" disabled>
-    <span class="call-button__icon"></span>
-    Call
-  </button>
+  <button class="call-button" disabled>Call</button>
   <span class="message">Loading...</span>
   <input class="number-input" placeholder="+4412345678" />
 
