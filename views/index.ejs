@@ -79,7 +79,7 @@
     var messageEl = document.querySelector('.message');
     var callButtonEl = document.querySelector('.call-button');
 
-    Twilio.Device.setup('<%= token %>', { debug: true });
+    Twilio.Device.setup('<%= token %>', { debug: false });
 
     Twilio.Device.ready(function (device) {
       // Could be called multiple times if network drops and comes back.
@@ -94,22 +94,22 @@
     });
 
     Twilio.Device.cancel(function(conn) {
-        console.log(conn.parameters.From); // who canceled the call
+        // console.log(conn.parameters.From); // who canceled the call
         conn.status // => "closed"
     });
 
     Twilio.Device.error(function (error) {
-      console.log('error', error);
+      // console.log('error', error);
       messageEl.className = 'message';
       messageEl.classList.add('message--error');
       messageEl.innerHTML = 'Error: ' + error.message;
     });
 
     Twilio.Device.connect(function (conn) {
-      console.log('connected');
+      // console.log('connected');
       messageEl.className = 'message';
       messageEl.classList.add('message--connected');
-      messageEl.innerHTML = 'Calling!.. <br /> <small>(Will hangup in 30 secs if they dont pickup)</small>';
+      messageEl.innerHTML = 'Calling!.. <br /> <small>(Will hangup in 30 secs)</small>';
 
       timer = setTimeout(function(){
         hangup();
@@ -117,12 +117,13 @@
     });
 
     Twilio.Device.disconnect(function (conn) {
-      console.log('disconnected');
+      // console.log('disconnected');
       messageEl.className = 'message';
       messageEl.classList.add('message--disconnected');
       messageEl.innerHTML = 'Call ended';
 
       clearTimeout(timer);
+      hangup();
     });
 
     Twilio.Device.incoming(function (conn) {
