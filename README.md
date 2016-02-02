@@ -25,6 +25,9 @@ You will be asked for a few parameters, all of which you have in hand from the p
 
 put your environment variables in a .env file instead
 
+1. `npm install`
+2. `node server.js`
+
 ## post install
 
 Take your new Heroku URL that you just created (for example http://funky-monkey-567.herokuapp.com) and:
