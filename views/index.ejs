@@ -37,7 +37,6 @@
     .message{ color: grey; }
     .message--error{ color: red; }
     .message--connected{ color: green; }
-    .message--disconnected{ color: blue; }
 
     .number-input {
       font: inherit;
@@ -99,7 +98,6 @@
     Twilio.Device.disconnect(function (conn) {
       // console.log('disconnected');
       messageEl.className = 'message';
-      messageEl.classList.add('message--disconnected');
       messageEl.innerHTML = 'Call ended';
     });
 
