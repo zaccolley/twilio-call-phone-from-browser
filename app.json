@@ -1,0 +1,20 @@
+{
+  "name": "twilio-call-phone-from-browser",
+  "description": "Call a phone from a browser using twilio using a node express setup",
+  "website": "https://github.com/zaccolley/twilio-call-phone-from-browser",
+  "success_url": "/",
+  "env": {
+    "TWILIO_ACCOUNT_SID": {
+      "description": "Your Twilio Account Id"
+    },
+    "TWILIO_AUTH_TOKEN": {
+      "description": "Your Twilio Account Token"
+    },
+    "TWILIO_CALLER_ID": {
+      "description": "Must be a Twilio number in your account"
+    },
+    "TWILIO_APP_ID": {
+      "description": "Application Id - you must create app in your Twilio Account -> Dev Tools ->  Twiml Apps"
+    }
+  }
+}

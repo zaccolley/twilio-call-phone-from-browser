@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>call from browser</title>
+
+  <style>
+    *::before, *, *::after{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body{
+      font-family: sans-serif;
+      font-size: 2em;
+      padding: 1em;
+    }
+
+    .call-button {
+      font: inherit;
+      background: orange;
+      color: white;
+      border: 0;
+      border-radius: 5px;
+      padding: .5em;
+    }
+
+    .call-button--hangup{
+      background: red;
+    }
+
+    .call-button:hover{
+      opacity: .7;
+      cursor: pointer;
+    }
+
+    .call-button__icon {
+      float: left;
+      margin-right: .25em;
+      width: 1em;
+      height: 1em;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .call-button--error .call-button__icon{ background: red; }
+    .call-button--connected .call-button__icon{ background: green; }
+    .call-button--disconnected .call-button__icon{ background: blue; }
+
+    .message{ color: grey; }
+    .message--error{ color: red; }
+    .message--connected{ color: green; }
+    .message--disconnected{ color: blue; }
+
+    .number-input {
+      font: inherit;
+      margin: .5em;
+      padding: .25em;
+
+      border: 2px solid #D6D6D6;
+      border-radius: 5px;
+    }
+
+  </style>
+</head>
+<body>
+  <button class="call-button" disabled>
+    <span class="call-button__icon"></span>
+    Call
+  </button>
+  <span class="message">Loading...</span>
+  <input class="number-input" placeholder="+4412345678" />
+
+  <script src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+
+    var timer;
+    var messageEl = document.querySelector('.message');
+    var callButtonEl = document.querySelector('.call-button');
+
+    Twilio.Device.setup('<%= token %>', { debug: true });
+
+    Twilio.Device.ready(function (device) {
+      // Could be called multiple times if network drops and comes back.
+      // When the TOKEN allows incoming connections, this is called when
+      // the incoming channel is open.
+      callButtonEl.disabled = false;
+      messageEl.innerHTML = 'Ready to go!';
+    });
+
+    Twilio.Device.offline(function() {
+        // Called on network connection lost.
+    });
+
+    Twilio.Device.cancel(function(conn) {
+        console.log(conn.parameters.From); // who canceled the call
+        conn.status // => "closed"
+    });
+
+    Twilio.Device.error(function (error) {
+      console.log('error', error);
+      messageEl.className = 'message';
+      messageEl.classList.add('message--error');
+      messageEl.innerHTML = 'Error: ' + error.message;
+    });
+
+    Twilio.Device.connect(function (conn) {
+      console.log('connected');
+      messageEl.className = 'message';
+      messageEl.classList.add('message--connected');
+      messageEl.innerHTML = 'Calling!.. <br /> <small>(Will hangup in 30 secs if they dont pickup)</small>';
+
+      timer = setTimeout(function(){
+        hangup();
+      }, 30000);
+    });
+
+    Twilio.Device.disconnect(function (conn) {
+      console.log('disconnected');
+      messageEl.className = 'message';
+      messageEl.classList.add('message--disconnected');
+      messageEl.innerHTML = 'Call ended';
+
+      clearTimeout(timer);
+    });
+
+    Twilio.Device.incoming(function (conn) {
+      messageEl.innerHTML = 'Incoming connection from ' + conn.parameters.From;
+      conn.accept(); // accept the incoming connection and start two-way audio
+    });
+
+    callButtonEl.addEventListener('click', function(){
+
+      if (callButtonEl.classList.contains('call-button--hangup')) {
+        hangup();
+      } else {
+        call();
+      }
+
+    });
+
+    function hangup () {
+      Twilio.Device.disconnectAll();
+      callButtonEl.innerHTML = '<span class="call-button__icon"></span>Call';
+      callButtonEl.className = 'call-button';
+    }
+
+    function call () {
+      var numberEl = document.querySelector('.number-input');
+      Twilio.Device.connect({ "PhoneNumber": numberEl.value });
+      callButtonEl.innerHTML = '<span class="call-button__icon"></span>Hangup';
+      callButtonEl.className = 'call-button';
+      callButtonEl.classList.add('call-button--hangup');
+    }
+
+  });
+  </script>
+</body>
+</html>
